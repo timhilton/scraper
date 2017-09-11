@@ -5,10 +5,13 @@ let request = require('request');
 let util = require('util');
 let str2json = require('string-to-json');
 
-scraperjs.StaticScraper.create('http://www.ulta.com/liquid-glow?productId=xlsImpprod16451223')
+let url = 'http://www.ulta.com/liquid-glow?productId=xlsImpprod16451223';
+
+scraperjs.StaticScraper.create(url)
     .scrape($ => {
         // create CSV fields
-        const fields = ['name', 'location', 'rating', 'review'];
+
+        const fields = ['url', 'name', 'location', 'rating', 'review'];
         // new line for CSV
         const newLine= "\r\n";
         // create heading on csv
@@ -37,7 +40,7 @@ scraperjs.StaticScraper.create('http://www.ulta.com/liquid-glow?productId=xlsImp
                     let list = [];
                     // loop through parsed json creating the review objects
                     for (let j = 0; j < parsed.length; j++) {
-                        let obj = {name: parsed[j].r.n, location: parsed[j].r.w, rating: parsed[j].r.r, review: parsed[j].r.p};
+                        let obj = {url: url, name: parsed[j].r.n, location: parsed[j].r.w, rating: parsed[j].r.r, review: parsed[j].r.p};
                         // push review objects to list
                         list.push(obj);
                     }
