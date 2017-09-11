@@ -1,3 +1,4 @@
+// required node modules
 let scraperjs = require('scraperjs');
 let json2csv = require('json2csv');
 let fs = require('fs');
@@ -5,19 +6,24 @@ let request = require('request');
 let util = require('util');
 let str2json = require('string-to-json');
 
+// url to be scraped
 let url = 'http://www.ulta.com/liquid-glow?productId=xlsImpprod16451223';
 
+// product ID of item
+let productId = url.split('=');
+productId = productId.pop();
+
+// start scraping
 scraperjs.StaticScraper.create(url)
     .scrape($ => {
         // create CSV fields
-
         const fields = ['url', 'name', 'location', 'rating', 'review'];
         // new line for CSV
         const newLine= "\r\n";
         // create heading on csv
         let csv = json2csv({fields: fields}) + newLine;
         // create the csv file
-        fs.writeFile('ulta-reviews.csv', csv, (err) => {
+        fs.writeFile('' + productId + '.csv', csv, (err) => {
           if (err) throw err;
         });
         // counts number of reviews
@@ -49,7 +55,7 @@ scraperjs.StaticScraper.create(url)
                     // convert toCsv to csv
                     let csv = json2csv(toCsv) + newLine;
                     // append to the csv file
-                    fs.appendFile('ulta-reviews.csv', csv, (err) => {
+                    fs.appendFile('' + productId + '.csv', csv, (err) => {
                         if(err) throw err;
                     });
                 });
