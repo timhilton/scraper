@@ -83,14 +83,14 @@ fs.readFile('paths.json', 'utf8', function (err, data) {
                             // push review objects to list
                             list.push(revObj);
                         }
-                        // create json object to convert to csv from list - no column titles
-                        // let toCsv = {data: list, fields: fields, hasCSVColumnTitle: false};
-                        // convert toCsv to csv
-                        // let csv = json2csv(toCsv) + newLine;
-                        // append to the csv file
-                        // fs.appendFile('' + productId + '.csv', csv, (err) => {
-                        //     if(err) throw err;
-                        // });
+                        create json object to convert to csv from list - no column titles
+                        let toCsv = {data: list, fields: fields, hasCSVColumnTitle: false};
+                        convert toCsv to csv
+                        let csv = json2csv(toCsv) + newLine;
+                        append to the csv file
+                        fs.appendFile('' + productId + '.csv', csv, (err) => {
+                            if(err) throw err;
+                        });
                     });
             }
         })
