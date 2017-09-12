@@ -66,6 +66,7 @@ fs.readFile('paths.json', 'utf8', function (err, data) {
             for (let j = 1; j <= numPages; j++) {
                     // each path = 1 page
                     let path = "http://www.ulta.com/reviewcenter/pwr/content"+ contNum + "/" + productId + "-en_US-" + j + "-reviews.js";
+                    console.log(path);
                     // request data from path
                     request(path, (err, res, body) => {
                         // parse the response body
