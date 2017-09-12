@@ -39,13 +39,13 @@ fs.readFile('paths.json', 'utf8', function (err, data) {
       contentNum.push(obj[i].contentNum);
 
     let url = 'http://www.ulta.com' + productUrl[i];
-
     // product ID of item
     let productId = url.split('=');
     productId = productId.pop();
 
     let contNum = contentNum[i];
 //start scraping
+console.log(i);
     scraperjs.StaticScraper.create(url)
         .scrape($ => {
             // create CSV fields
@@ -66,7 +66,6 @@ fs.readFile('paths.json', 'utf8', function (err, data) {
             for (let j = 1; j <= numPages; j++) {
                     // each path = 1 page
                     let path = "http://www.ulta.com/reviewcenter/pwr/content"+ contNum + "/" + productId + "-en_US-" + j + "-reviews.js";
-                    console.log(path);
                     // request data from path
                     request(path, (err, res, body) => {
                         // parse the response body
