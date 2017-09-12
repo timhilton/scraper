@@ -25,15 +25,15 @@ let str2json = require('string-to-json');
 //         });
 //     });
 
-// url to be scraped
-
-
+// read and parse paths.json use that to start scrape
 fs.readFile('paths.json', 'utf8', function (err, data) {
   if (err) throw err;
   var obj = JSON.parse(data);
+
   var productUrl = [];
   var contentNum = [];
   var prodId = [];
+
   for (var i = 0; i < obj.length; i++) {
       productUrl.push(obj[i].productUrl);
       contentNum.push(obj[i].contentNum);
@@ -66,7 +66,6 @@ fs.readFile('paths.json', 'utf8', function (err, data) {
             for (let j = 1; j <= numPages; j++) {
                     // each path = 1 page
                     let path = "http://www.ulta.com/reviewcenter/pwr/content"+ contNum + "/" + productId + "-en_US-" + j + "-reviews.js";
-                    console.log(path);
                     // request data from path
                     request(path, (err, res, body) => {
                         // parse the response body
@@ -83,11 +82,11 @@ fs.readFile('paths.json', 'utf8', function (err, data) {
                             // push review objects to list
                             list.push(revObj);
                         }
-                        create json object to convert to csv from list - no column titles
+                        // create json object to convert to csv from list - no column titles
                         let toCsv = {data: list, fields: fields, hasCSVColumnTitle: false};
-                        convert toCsv to csv
+                        // convert toCsv to csv
                         let csv = json2csv(toCsv) + newLine;
-                        append to the csv file
+                        // append to the csv file
                         fs.appendFile('' + productId + '.csv', csv, (err) => {
                             if(err) throw err;
                         });
