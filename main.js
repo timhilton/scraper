@@ -6,8 +6,27 @@ let request = require('request');
 let util = require('util');
 let str2json = require('string-to-json');
 
+let allProducts = 'http://www.ulta.com/brand/revlon-makeup?N=1z141giZ26y1&Nrpp=90'
+
+scraperjs.StaticScraper.create(allProducts)
+    .scrape($ => {
+        let total = $('.productQvContainer');
+        let urlPath = [];
+
+        for (var i = 0; i < total.length; i++) {
+            let productObj = {productUrl: total[i].children[3].children[1].attribs.href, contentNum: ''};
+            urlPath.push(productObj);
+        }
+
+        let paths = JSON.stringify(urlPath);
+
+        fs.writeFile('paths.json', paths, (err) => {
+            if (err) throw err;
+        });
+    });
+
 // url to be scraped
-let url = 'http://www.ulta.com/liquid-glow?productId=xlsImpprod16451223';
+let url = 'http://www.ulta.com/dipbrow-pomade?productId=xlsImpprod6330246';
 
 // product ID of item
 let productId = url.split('=');
@@ -27,13 +46,14 @@ scraperjs.StaticScraper.create(url)
           if (err) throw err;
         });
         // counts number of reviews
-        const pages = $('.count');
+        let pages = $('.count');
         // number of reviews divided by 10 always round up to get pagination
-        const numPages = Math.ceil((pages.text()/10));
+        let numPages = Math.ceil((pages.text()/10));
         // start loop to loop through pagination
         for (let i = 1; i <= numPages; i++) {
                 // each path = 1 page
-                let path = "http://www.ulta.com/reviewcenter/pwr/content/07/92/xlsImpprod16451223-en_US-" + i + "-reviews.js";
+                let path = "http://www.ulta.com/reviewcenter/pwr/content/00/49/xlsImpprod6330246-en_US-" + i + "-reviews.js";
+
                 // request data from path
                 request(path, (err, res, body) => {
                     // parse the response body
